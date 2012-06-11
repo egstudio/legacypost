@@ -16,4 +16,5 @@ table.widefat td { padding: 1em 0.5em; }
 #legacy-post-new-form label { width: 150px; display: block; float: left; line-height: 2.5em;}
 #legacy-post-new-form input.txt { width: 300px; padding: 5px; }
 #legacy-post-new-form select { width: 300px; }
+#legacy-post-new-form div.postbox { width: 250px; }
 #legacy-post-submit { min-width: 80px; }

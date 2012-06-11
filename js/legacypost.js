@@ -6,19 +6,11 @@ jQuery(document).ready(function($) {
 	$('td.content').each(function() {
 		var $this = $(this),
 			content = $this.text(),
-			flag = false;
-		$this.empty();
-		$this.append('<a href="/">Open / Close Content</a>');
-		$this.find('a').bind('click', function() {
-			if (!flag) {
-				flag = true;
-				$this.append(content);
-			}
-			else {
-				flag = false;
-				$this.empty();
-				$this.append('<a href="/">Open / Close Content</a>');
-			}
+			$link = $("<a href='/'>Expand / Contract</a>");
+		$this.find('div.content').hide();
+		$this.append($link);
+		$link.bind('click', function() {
+			$this.find('div.content').toggle();
 			return false;
 		});
 	});
@@ -43,17 +35,15 @@ jQuery(document).ready(function($) {
 		})
 	});
 	
-	var fixHelper = function(e, ui) {
-		ui.children().each(function() {
-			$(this).width($(this).width());
-		});
-		return ui;
-	};
-	
 	$('#legacy-posts-sortable .content').sortable({
 		placeholder: 'content-highlight',
 		containment: 'parent',
-		helper: fixHelper,
+		helper: function(e, ui) {
+			ui.children().each(function() {
+				$(this).width($(this).width());
+			});
+			return ui;
+		},
 		start: function(event, ui) {
 			$(ui.item).css('width','100%');
 		},
@@ -71,6 +61,5 @@ jQuery(document).ready(function($) {
 			});
 		}
 	});
-
 	$('#legacy-posts-sortable .content').disableSelection();
 });

@@ -37,18 +37,27 @@ foreach ($posts as $post) :
 		<tr>
 			<td class="post-id" id="<?php echo $post->id; ?>"><?php echo $post->id; ?></td>
 			<td><?php echo $post->title; ?></td>
-			<td class="content"><?php echo $post->content; ?></td>
+			<td class="content"><div class="content"><?php echo $post->content; ?></content></td>
 			<td><?php echo $post->img; ?></td>
 			<td><?php echo $post->img_title; ?></td>
 			<td><?php echo $post->link; ?></td>
-			<td><?php echo get_cat_name($post->category); ?></td>
+			<td><?php
+				$post->category = explode(',', $post->category);
+				$arr = array();
+				foreach ($post->category as $category) :
+					$arr[] = get_cat_name($category);
+				endforeach;
+				echo implode(', ', $arr);
+			?></td>
 			<td class="post-position" id="<?php echo $post->position; ?>"><?php echo $post->position; ?></td>
 			<td><?php 
 				if ($post->tags != 0) {
 					$post->tags = explode(',', $post->tags);
+					$arr = array();
 					foreach ($post->tags as $tag) :
-				 	echo get_tag($tag)->name,", ";
+				 		$arr[] = get_tag($tag)->name;
 					endforeach;
+					echo implode(', ', $arr);
 				}
 				else
 					echo 'No tags defined';

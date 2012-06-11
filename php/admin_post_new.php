@@ -21,14 +21,56 @@
 				<label for="link">Post Link</label>
 				<input type="text" class="txt" name="link" value="<?php echo (isset($data) ? $data->link : ''); ?>" id="link"><br />
 			</p>
+			<div id="categorydiv" class="postbox ">
+				<h3 class="hndle">
+					<span>Categories</span>
+				</h3>
+				<div class="inside">
+				<?php				
+					$walker = new Walker_Category_Checklist;
+					$taxonomy = 'category';
+					$categories = (array) get_terms($taxonomy, array('get' => 'all'));
+					$args = array();
+					$args['selected_cats'] = (isset($data->category) ? explode(',', $data->category) : array());
+					$args['popular_cats'] = array();
+				?>
+					<div id="taxonomy-<?php echo $taxonomy; ?>" class="categorydiv">
+						<div id="<?php echo $taxonomy; ?>-all" class="tabs-panel">
+							<ul id="<?php echo $taxonomy; ?>checklist" class="list:<?php echo $taxonomy?> categorychecklist form-no-clear">
+							<?php 
+								echo call_user_func_array(array(&$walker, 'walk'), array($categories, 0, $args));
+							?>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 			
-			<label for="category">Category</label>
-			<?php 
-				$args = array('hide_empty' => 0, 'name' => 'category', 'hierarchical' => true);
-				if (isset($data))
-					$args['selected'] = $data->category;
-				wp_dropdown_categories($args); 
-			?>
+			<div id="tagdiv" class="postbox ">
+				<h3 class="hndle">
+					<span>Tags</span>
+				</h3>
+				<div class="inside">
+				<?php
+					$walker = new Walker_Category_Checklist;
+					$taxonomy = 'post_tag';
+					$categories = (array) get_terms($taxonomy, array('get' => 'all'));
+					$args = array('taxonomy' => 'post_tag');
+					$args['selected_cats'] = (isset($data->tags) ? explode(',', $data->tags) : array());
+					$args['popular_cats'] = array();
+				?>
+					<div id="taxonomy-<?php echo $taxonomy; ?>" class="categorydiv">
+						<div id="<?php echo $taxonomy; ?>-all" class="tabs-panel">
+							<ul id="<?php echo $taxonomy; ?>checklist" class="list:<?php echo $taxonomy?> categorychecklist form-no-clear">
+							<?php
+								echo call_user_func_array(array(&$walker, 'walk'), array($categories, 0, $args));
+							?>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</fieldset>
 		<p>
 			<input type="submit" name="legacy-post-submit" value="Publish" id="legacy-post-submit" class="button-primary"/>

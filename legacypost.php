@@ -7,6 +7,7 @@ Author: egstudio.biz (Liad Guez, Itay Sidis, Guy Maliar)
 Version: 1.1
 Author URI: http://www.egstudio.biz/
 */
+
 if (!class_exists("LegacyPost")) {
 	class LegacyPost {
 		public $_errors = array();
@@ -90,10 +91,11 @@ if (!class_exists("LegacyPost")) {
 					'img'		=> 	$_POST['img'],
 					'img_title'	=> 	$_POST['img_title'],
 					'link'		=>	$_POST['link'],
-					'category' 	=>	$_POST['category'],
+					'category' 	=>	implode(',', $_POST['post_category']),
+					'tags'		=> 	implode(',', $_POST['tax_input']['post_tag']),
 					'created'	=>	date('Y-m-d H:i:s'),
 					'modified'	=> 	date('Y-m-d H:i:s')
-					);					
+					);
 				try {
 					if (isset($_GET['id'])) {
 						$args['id'] = $_GET['id'];
@@ -117,6 +119,7 @@ if (!class_exists("LegacyPost")) {
 			else {
 				if (isset($this->_post_id))
 					$data = self::get_post($this->_post_id);
+				require_once('./includes/meta-boxes.php');
 				include_once 'php/admin_post_new.php';
 			}
 		}
@@ -131,7 +134,7 @@ if (!class_exists("LegacyPost")) {
 			`img` VARCHAR( 255 ) NOT NULL ,
 			`img_title` VARCHAR( 255 ) NOT NULL ,
 			`link` VARCHAR( 255 ) NOT NULL ,
-			`category` SMALLINT NOT NULL ,
+			`category` VARCHAR( 255 ) NOT NULL ,
 			`position` SMALLINT UNSIGNED NOT NULL ,
 			`tags` VARCHAR( 255 ) NOT NULL ,
 			`created` TIMESTAMP NOT NULL ,
