@@ -3,6 +3,10 @@ jQuery(document).ready(function($) {
 		$('#legacy-post-show-category-form').submit();
 	});
 	
+	$('#legacy-post-actions').find('select[name="show_tag"]').bind('change', function() {
+		$('#legacy-post-show-tag-form').submit();
+	});
+	
 	$('td.content').each(function() {
 		var $this = $(this),
 			content = $this.text(),

@@ -10,9 +10,18 @@ if (isset($_POST['show_category']))
 wp_dropdown_categories($args); 
 ?>
 </form>
+<p class="alignleft">View by tag: </p>
+<form id="legacy-post-show-tag-form" action="" method="post">
+<?php 
+$args = array('show_option_all' => 'All Tags', 'hide_empty' => 0, 'name' => 'show_tag', 'taxonomy' => 'post_tag', 'orderby' => 'name', 'order' => 'ASC');
+if (isset($_POST['show_tag']))
+	$args['selected'] = $_POST['show_tag'];
+wp_dropdown_categories($args); 
+?>
+</form>
 </div>
 <div id="legacy-post-show-all">
-<table id="legacy-posts<?php if (isset($_POST['show_category']) && $_POST['show_category'] != '0') echo '-sortable'; ?>" class="wp-list-table widefat fixed posts">
+<table id="legacy-posts<?php if ((isset($_POST['show_category']) && $_POST['show_category'] != '0') || (isset($_POST['show_tag']) && $_POST['show_tag'] != '0')) echo '-sortable'; ?>" class="wp-list-table widefat fixed posts">
 	<thead>
 		<tr>
 			<th>ID</th>
@@ -22,7 +31,7 @@ wp_dropdown_categories($args);
 			<th>Image Title</th>
 			<th>Post link</th>
 			<th>Category</th>
-			<th>Order</th>
+			<?php if ((isset($_POST['show_category']) && $_POST['show_category'] != '0') || (isset($_POST['show_tag']) && $_POST['show_tag'] != '0')) : ?><th>Order</th><? endif; ?>
 			<th>Tags</th>
 			<th>Created</th>
 			<th>Modified</th>
@@ -49,7 +58,7 @@ foreach ($posts as $post) :
 				endforeach;
 				echo implode(', ', $arr);
 			?></td>
-			<td class="post-position" id="<?php echo $post->position; ?>"><?php echo $post->position; ?></td>
+			<?php if ((isset($_POST['show_category']) && $_POST['show_category'] != '0') || (isset($_POST['show_tag']) && $_POST['show_tag'] != '0')) : ?><td class="post-position" id="<?php echo $post->position; ?>"><?php echo $post->position; ?></td><? endif; ?>
 			<td><?php 
 				if ($post->tags != 0) {
 					$post->tags = explode(',', $post->tags);

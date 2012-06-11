@@ -76,7 +76,9 @@ if (!class_exists("LegacyPost")) {
 			$table = $wpdb->prefix.self::$_table_name;
 			$sql = "SELECT id, title, content, img, img_title, link, category, position, tags, created, modified FROM $table";
 			if (isset($_POST['show_category']) && $_POST['show_category'] != '0')
-				$sql .= " WHERE category = '{$_POST['show_category']}' ORDER BY position ASC";
+				$sql .= " WHERE category LIKE '%{$_POST['show_category']}%' ORDER BY position ASC";
+			elseif (isset($_POST['show_tag']) && $_POST['show_tag'] != '0')
+				$sql .= " WHERE tags LIKE '%{$_POST['show_tag']}%' ORDER BY position ASC";
 			else
 				$sql .= " ORDER BY category, position ASC";
 			$posts = $wpdb->get_results($sql,OBJECT);
